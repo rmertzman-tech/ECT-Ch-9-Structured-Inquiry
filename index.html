@@ -1,75 +1,863 @@
-<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>PHIL-HIST-SUPER-3 — The Philosophical Mapbook</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <title>ECT-SI-CH9 — What Price Is Missing From the Map?</title>
+    <style>
+    :root {
+        --bg: #f6f4ee;
+        --panel: #fffdfa;
+        --ink: #24211d;
+        --muted: #655f57;
+        --line: #d9d2c5;
+        --accent: #3f5d69;
+        --accent2: #5c4f78;
+        --soft: #eef4f5;
+        --soft2: #f1eef7;
+        --warn: #fff4da;
+        --good: #edf7ec;
+        --danger: #7a3b2e;
+        --shadow: 0 10px 26px rgba(40, 35, 28, .08);
+    }
+
+    * {
+        box-sizing:border-box
+    }
+
+    html {
+        scroll-behavior:smooth
+    }
+
+    body {
+        margin: 0;
+        font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: linear-gradient(#f8f6f0, #e9edf0)
+    }
+
+    header {
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(135deg, #eef4f5, #f2eef7)
+    }
+
+    .wrap {
+        max-width: 1180px;
+        margin: auto;
+        padding:0 18px
+    }
+
+    .hero {
+        display: grid;
+        grid-template-columns: 1.55fr .85fr;
+        gap: 18px;
+        padding-top: 26px;
+        padding-bottom: 22px
+    }
+
+    .card, section, nav {
+        background: rgba(255, 253, 250, .98);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow:var(--shadow)
+    }
+
+    .card, section {
+        padding: 22px
+    }
+
+    .eyebrow, .kicker, .phase {
+        font-weight: 850;
+        text-transform: uppercase;
+        letter-spacing:.065em
+    }
+
+    .eyebrow, .kicker {
+        font-size: .78rem;
+        color:#334e58
+    }
+
+    .phase {
+        font-size: .75rem;
+        display: inline-block;
+        background: var(--soft2);
+        color: #43375e;
+        border-radius: 999px;
+        padding: 4px 9px;
+        margin-bottom: 8px
+    }
+
+    h1 {
+        font-size: clamp(2rem, 4vw, 3.15rem);
+        line-height: 1.05;
+        margin:8px 0
+    }
+
+    h2, h3 {
+        color:#334e58
+    }
+
+    .tagline {
+        font-size:1.1rem
+    }
+
+    .pill {
+        display: inline-block;
+        border: 1px solid #bccbd0;
+        background: #f9fcfc;
+        border-radius: 999px;
+        padding: 5px 9px;
+        margin: 3px;
+        font-size: .84rem;
+        font-weight: 750
+    }
+
+    .layout {
+        display: grid;
+        grid-template-columns: 270px 1fr;
+        gap: 18px;
+        padding-top: 18px;
+        padding-bottom:32px
+    }
+
+    nav {
+        padding: 16px;
+        position: sticky;
+        top: 10px;
+        align-self:start
+    }
+
+    .toc {
+        list-style: none;
+        padding:0
+    }
+
+    .toc li {
+        margin:7px 0
+    }
+
+    .toc a {
+        text-decoration: none;
+        color: #334e58;
+        font-weight: 760;
+        font-size: .91rem
+    }
+
+    .bar {
+        height: 11px;
+        border-radius: 99px;
+        background: #e5ded1;
+        overflow:hidden
+    }
+
+    .bar div {
+        height: 100%;
+        width: 0;
+        background:var(--accent)
+    }
+
+    .small {
+        font-size: .9rem;
+        color: var(--muted)
+    }
+
+    label {
+        display: block;
+        font-weight: 780;
+        margin:13px 0 5px
+    }
+
+    textarea, select, input[type=text] {
+        width: 100%;
+        font: inherit;
+        padding: 9px 11px;
+        border: 1px solid #bdb5a7;
+        border-radius: 11px;
+        background:white
+    }
+
+    textarea {
+        min-height: 84px;
+        resize: vertical
+    }
+
+    .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap:14px
+    }
+
+    .case, .callout, .warning, .success, .snapshot, .board, .modebox {
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        padding: 14px;
+        margin:13px 0
+    }
+
+    .case {
+        background:#fff9ee
+    }
+
+    .callout {
+        background: var(--soft);
+        border-left:5px solid var(--accent)
+    }
+
+    .warning {
+        background: var(--warn);
+        border-left:5px solid #8a5f00
+    }
+
+    .success {
+        background: var(--good);
+        border-left:5px solid #4c7c46
+    }
+
+    .snapshot {
+        background: #f6f2ea;
+        border-style: dashed;
+        white-space: pre-wrap;
+        font:14px/1.45 ui-monospace, monospace
+    }
+
+    .board {
+        background: #f0edf7;
+        border-left: 5px solid var(--accent2)
+    }
+
+    .unlock {
+        border: 1px solid #cfc7d9;
+        border-radius: 14px;
+        background: #fff;
+        overflow: hidden;
+        margin:14px 0
+    }
+
+    .unlock summary {
+        cursor: pointer;
+        padding: 14px 16px;
+        font-weight: 850;
+        color: #43375e;
+        background:#f4f0f8
+    }
+
+    .unlock .inside {
+        padding:0 16px 16px
+    }
+
+    .pause {
+        font-size: .82rem;
+        font-weight: 800;
+        color: #6b5210;
+        background: #fff2cb;
+        display: inline-block;
+        border-radius: 999px;
+        padding: 3px 8px;
+        margin-top: 10px
+    }
+
+    .buttons {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
+        margin-top:14px
+    }
+
+    button {
+        font: inherit;
+        font-weight: 800;
+        border: 1px solid #334e58;
+        background: var(--accent);
+        color: white;
+        border-radius: 999px;
+        padding: 9px 14px;
+        cursor:pointer
+    }
+
+    button.secondary {
+        background: white;
+        color:#334e58
+    }
+
+    button.danger {
+        background: var(--danger);
+        border-color: var(--danger)
+    }
+
+    .check {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+        padding: 8px 10px;
+        border: 1px solid #d8d0c4;
+        border-radius: 10px;
+        background: #fbfaf6;
+        margin:7px 0
+    }
+
+    .check input {
+        margin-top: 5px
+    }
+
+    .hidden {
+        display:none !important
+    }
+
+    .output {
+        min-height: 280px;
+        font:13.5px/1.45 ui-monospace, monospace
+    }
+
+    .status {
+        font-weight: 760;
+        color: #334e58
+    }
+
+    footer {
+        text-align: center;
+        color: var(--muted);
+        padding: 22px
+    }
+
+    @media (max-width: 900px) {
+        .hero, .layout, .two {
+            grid-template-columns:1fr
+        }
+
+        nav {
+            position: static
+        }
+    }
+
+    @media print {
+        nav, .buttons, .modebox {
+            display:none !important
+        }
+
+        body {
+            background:white
+        }
+
+        .card, section {
+            box-shadow: none
+        }
+    }
+    </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topline">
-      <div><div class="brand">PHIL-HIST-SUPER-3</div><div class="tiny">READ → INQUIRE → CARRY FORWARD → APPLY</div></div>
-      <div id="saveStatus" class="save-pill"><span class="dot"></span><span class="save-text">Checking storage…</span></div>
+    <header>
+        <div class="wrap hero">
+            <div class="card">
+                <div class="eyebrow">ECT-SI-7-12 · Structured Inquiry Teaching Environment · Chapter 9</div>
+                <h1>What Price Is Missing From the Map?</h1>
+                <p class="tagline">
+                    <strong>Protect the conditions.</strong>
+                     What condition is being supported, damaged, hidden, or repaired?
+                </p>
+                <span class="pill">Map A → Map B</span>
+                <span class="pill">Instructor unlocks</span>
+                <span class="pill">Individual / group</span>
+                <span class="pill">Transfer + REOPEN</span>
+            </div>
+            <div class="card">
+                <h2>How to use this</h2>
+                <p>
+                    <strong>Live class:</strong>
+                     complete ENTER individually, compare in pairs/groups, and open each UNLOCK only when the instructor reaches it.
+                </p>
+                <p>
+                    <strong>Online/self-paced:</strong>
+                     work individually and open the three UNLOCKS in order. At COMPARE, construct a strong alternative map rather than waiting for a group.
+                </p>
+                <p class="small">Target: about 35–45 minutes of active inquiry distributed across a 60–75 minute class, or about 30–40 minutes self-paced.</p>
+            </div>
+        </div>
+    </header>
+    <div class="wrap layout">
+        <nav aria-label="Structured Inquiry navigation">
+            <strong>Session setup</strong>
+            <label for="workMode">How are you working?</label>
+            <select id="workMode">
+                <option value="individual">Individual</option>
+                <option value="group">Pair / group (2–4)</option>
+            </select>
+            <label for="pacingMode">Pacing</label>
+            <select id="pacingMode">
+                <option value="instructor">Instructor-paced</option>
+                <option value="self">Self-paced / online</option>
+            </select>
+            <div class="modebox small" id="modeNote"></div>
+            <strong>Progress</strong>
+            <div class="bar">
+                <div id="barFill"></div>
+            </div>
+            <div class="small" id="progressText"></div>
+            <div class="warning" id="mapAStatus">Map A not yet preserved</div>
+            <ol class="toc">
+                <li>
+                    <a href="#enter">1. ENTER + Map A</a>
+                </li>
+                <li>
+                    <a href="#compare">2. COMPARE</a>
+                </li>
+                <li>
+                    <a href="#unlock">3. UNLOCK</a>
+                </li>
+                <li>
+                    <a href="#return">4. RETURN + Map B</a>
+                </li>
+                <li>
+                    <a href="#transfer">5. TRANSFER</a>
+                </li>
+                <li>
+                    <a href="#close">6. CARRY FORWARD</a>
+                </li>
+            </ol>
+            <div class="buttons">
+                <button class="danger" id="clearBtn">Clear local work</button>
+            </div>
+        </nav>
+        <main>
+            <section id="enter">
+                <div class="phase">Individual first</div>
+                <div class="kicker">1 · ENTER — First Contact</div>
+                <h2>Cheap Housing, Dirty Air</h2>
+                <div class="case">
+                A city approves a new affordable-housing development near an industrial area. Housing costs are rising, many families need places they can afford, and city leaders describe the project as an expansion of opportunity.
+                For now, focus on that visible benefit.
+                </div>
+                <p>
+                    <strong>Before discussion or chapter explanation, make your own first map.</strong>
+                </p>
+                <label for="a_judgment">Right now, how strong does the case for the project seem?</label>
+                <select data-required="true" id="a_judgment">
+                    <option value="">Choose…</option>
+                    <option>Strong as proposed</option>
+                    <option>Promising but needs safeguards</option>
+                    <option>Seriously incomplete</option>
+                    <option>Not enough information yet</option>
+                </select>
+                <label for="a_reason">What is the strongest reason for your first judgment?</label>
+                <textarea data-required="true" id="a_reason"></textarea>
+                <label for="a_condition">
+                    What condition or good seems most visible in the current map? 
+                    <span class="small">(optional)</span>
+                </label>
+                <textarea id="a_condition"></textarea>
+                <label for="a_unknown">
+                    What would you still need to know before making a stronger judgment? 
+                    <span class="small">(optional)</span>
+                </label>
+                <textarea id="a_unknown"></textarea>
+                <div class="warning">
+                    <strong>Claim ceiling:</strong>
+                     your first reaction is data for inquiry, not a final verdict. Preserve it before later information changes the map.
+                </div>
+                <div class="buttons">
+                    <button id="sealBtn">Preserve Map A</button>
+                    <button class="secondary" id="unsealBtn">Reset Map A for technical error</button>
+                </div>
+                <div class="snapshot hidden" id="snapshotA"></div>
+            </section>
+            <section id="compare">
+                <div class="phase">Pair/group or solo alternative</div>
+                <div class="kicker">2 · COMPARE — Difference Harvest</div>
+                <h2>Expand the map; do not vote on it</h2>
+                <div class="board">
+                    <strong>Comparison rule:</strong>
+                     difference is useful evidence about what the first map made salient. The goal is not immediate consensus.
+                </div>
+                <label for="compare1" id="comparePrompt"></label>
+                <textarea data-required="true" id="compare1"></textarea>
+                <label for="compare2">
+                    What might a simple 'housing cost' frame leave outside the map? 
+                    <span class="small">(optional)</span>
+                </label>
+                <textarea id="compare2"></textarea>
+                <div class="callout">
+                    <strong>Live-class board prompt:</strong>
+                     Share one item under 
+                    <em>Different / Missing / Still unresolved</em>
+                    . Online students can use the same three headings in a discussion post if assigned.
+                </div>
+            </section>
+            <section id="unlock">
+                <div class="phase">Instructor + chapter</div>
+                <div class="kicker">3 · UNLOCK — Teach Into the Case</div>
+                <h2>Open each instrument when the chapter reaches it</h2>
+                <p>These are not a mini-lecture replacing the chapter. They are short instruments for testing the map you already made.</p>
+                <details class="unlock" id="unlock1">
+                    <summary>UNLOCK 1 — Agency needs conditions</summary>
+                    <div class="inside">
+                        <div class="pause">Instructor pause 1 · self-paced students open in order</div>
+                        <p>
+                            The area already has poor air quality, heavy truck traffic, noise, and pollution. Some families report asthma and breathing problems.
+                                     
+                            <br/>
+                            <br/>
+                            <strong>Instrument:</strong>
+                             agency does not happen in empty space. Breathable air, clean water, stable shelter, health, land, climate, and functioning ecosystems are life-support conditions. Housing and breathable air are both conditions of agency.
+                        </p>
+                        <label for="u1">What life-support conditions are now in view, and who depends on them most directly?</label>
+                        <textarea data-required="true" id="u1"></textarea>
+                    </div>
+                </details>
+                <details class="unlock" id="unlock2">
+                    <summary>UNLOCK 2 — Visible price vs hidden cost</summary>
+                    <div class="inside">
+                        <div class="pause">Instructor pause 2 · self-paced students open in order</div>
+                        <p>
+                            The rent may be lower, while health costs appear elsewhere: asthma, medical bills, missed school or work, stress, and long-term exposure. Some residents have few realistic housing alternatives and limited influence over siting decisions.
+                                     
+                            <br/>
+                            <br/>
+                            <strong>Instrument:</strong>
+                             a visible price can be low because part of the real cost is shifted onto bodies, communities, ecosystems, or futures. Environmental justice asks who benefits, who is burdened, who has voice, and who can refuse.
+                        </p>
+                        <label for="u2">What is the visible benefit, what is the hidden cost, and who has the least ability to avoid it?</label>
+                        <textarea data-required="true" id="u2"></textarea>
+                    </div>
+                </details>
+                <details class="unlock" id="unlock3">
+                    <summary>UNLOCK 3 — Future agency and protection</summary>
+                    <div class="inside">
+                        <div class="pause">Instructor pause 3 · self-paced students open in order</div>
+                        <p>
+                            Children and future residents may inherit health burdens and environmental conditions they did not choose. A responsible map therefore asks what protection, monitoring, redesign, participation, or restoration could keep both housing and health in view.
+                                     
+                            <br/>
+                            <br/>
+                            <strong>Instrument:</strong>
+                             future agency asks whether later people will retain conditions for living, choosing, participating, and repairing.
+                        </p>
+                        <label for="u3">Propose a protection or redesign that refuses the false choice 'affordable housing or clean air.'</label>
+                        <textarea data-required="true" id="u3"></textarea>
+                    </div>
+                </details>
+            </section>
+            <section id="return">
+                <div class="phase">Individual return</div>
+                <div class="kicker">4 · RETURN — Map B</div>
+                <h2>Reopen the original case at higher resolution</h2>
+                <div class="snapshot hidden" id="returnSnapshot"></div>
+                <label for="b_judgment">After the unlocks, how do you now judge the project as proposed?</label>
+                <select data-required="true" id="b_judgment">
+                    <option value="">Choose…</option>
+                    <option>Strong as proposed</option>
+                    <option>Promising but needs safeguards/redesign</option>
+                    <option>Seriously incomplete</option>
+                    <option>Not enough information yet</option>
+                </select>
+                <label for="b_change">What changed when the map widened from price to conditions, burdens, voice, and future agency?</label>
+                <textarea data-required="true" id="b_change"></textarea>
+                <label for="b_limit">
+                    What can you still not responsibly conclude from the information given? 
+                    <span class="small">(optional)</span>
+                </label>
+                <textarea id="b_limit"></textarea>
+                <div class="success">
+                    <strong>No forced conversion:</strong>
+                     Map B may change your conclusion, strengthen it, weaken it, qualify it, or reveal that a different question now matters most.
+                </div>
+            </section>
+            <section id="transfer">
+                <div class="phase">Independent first</div>
+                <div class="kicker">5 · TRANSFER — New Case</div>
+                <h2>Transfer — The Cooling Greenway</h2>
+                <div class="case">
+                A city proposes trees, shade, and a greenway in its hottest neighborhood. The project could reduce heat exposure and improve air quality. Residents also worry that rising property values and rents could displace the people who currently bear the heat burden.
+                </div>
+                <label for="transferAnalysis">Widen the map. Identify the life-support conditions, visible benefits, hidden costs, distribution, and a repair that protects both environmental and housing agency.</label>
+                <textarea data-required="true" id="transferAnalysis"></textarea>
+                <div class="buttons">
+                    <button id="captureTransferBtn">Capture first pass + reveal self-check</button>
+                    <button class="secondary" id="resetTransferBtn">Reset capture</button>
+                </div>
+                <div class="snapshot hidden" id="transferSnapshot"></div>
+                <div class="hidden" id="selfCheck">
+                    <h3>Self-check — after your first pass</h3>
+                    <label class="check">
+                        <input id="sc1" type="checkbox"/>
+                        Named the life-support condition(s)
+                    </label>
+                    <label class="check">
+                        <input id="sc2" type="checkbox"/>
+                        Tracked dependency
+                    </label>
+                    <label class="check">
+                        <input id="sc3" type="checkbox"/>
+                        Separated visible benefit from hidden cost
+                    </label>
+                    <label class="check">
+                        <input id="sc4" type="checkbox"/>
+                        Checked voice and choice
+                    </label>
+                    <label class="check">
+                        <input id="sc5" type="checkbox"/>
+                        Included future agency
+                    </label>
+                    <label class="check">
+                        <input id="sc6" type="checkbox"/>
+                        Avoided a false either/or repair
+                    </label>
+                </div>
+                <label for="transferLimit">What can you still not conclude from the transfer case?</label>
+                <textarea data-required="true" id="transferLimit"></textarea>
+                <label for="transferReopen">What new evidence, consequence, or context would make you REOPEN your transfer judgment?</label>
+                <textarea data-required="true" id="transferReopen"></textarea>
+            </section>
+            <section id="close">
+                <div class="phase">Authorial return</div>
+                <div class="kicker">6 · CARRY FORWARD</div>
+                <h2>What happened to your reasoning?</h2>
+                <label for="relation">Which best describes the relation between Map A and Map B?</label>
+                <select data-required="true" id="relation">
+                    <option value="">Choose…</option>
+                    <option>My conclusion changed</option>
+                    <option>My conclusion stayed, but my explanation became more precise</option>
+                    <option>My conclusion stayed, but my reasons changed</option>
+                    <option>I became less certain / more qualified</option>
+                    <option>I now think a different question matters most</option>
+                </select>
+                <label for="carry">One sentence you want to carry forward from Chapter 9 about conditions, hidden costs, and future agency.</label>
+                <textarea data-required="true" id="carry"></textarea>
+                <label for="discussion">
+                    One question worth carrying into live class or an online discussion 
+                    <span class="small">(optional)</span>
+                </label>
+                <textarea id="discussion"></textarea>
+                <div class="callout status" id="validation">Generate a carry-forward note when you are ready.</div>
+                <div class="buttons">
+                    <button id="generateBtn">Generate carry-forward note</button>
+                    <button class="secondary" id="copyBtn">Copy note</button>
+                    <button class="secondary" id="downloadBtn">Download note</button>
+                </div>
+                <label for="output">Structured Inquiry carry-forward note</label>
+                <textarea class="output" id="output" readonly=""></textarea>
+            </section>
+        </main>
     </div>
-  </header>
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="card compact route-select">
-        <label for="routeProfile">Route manifest</label>
-        <select id="routeProfile"></select>
-        <p id="routeDescription" class="tiny muted"></p><p id="routeStateDetail" class="tiny muted"></p>
-        <div class="progress-line"><span id="progressBar"></span></div>
-        <div id="progressText" class="tiny muted" style="margin-top:5px"></div>
-      </div>
-      <div id="nav"></div>
-    </aside>
-    <main class="main">
-      <section class="card hero">
-        <div class="meta"><span class="pill" id="typePill"></span><span class="pill" id="partPill"></span></div>
-        <h1 id="nodeTitle"></h1><p id="nodeSubtitle"></p><p id="nativeObject"></p>
-        <div class="actions"><button class="btn secondary" id="prevBtn">← Previous</button><button class="btn secondary" id="nextBtn">Next →</button></div>
-      </section>
-      <div class="tabs">
-        <button data-tab="read">READ</button><button data-tab="inquire" class="active">INQUIRE</button><button data-tab="map">MAP</button><button data-tab="media">MEDIA</button><button data-tab="data">DATA / RECOVERY</button>
-      </div>
-
-      <section class="card pane" id="pane-read">
-        <h2>Canonical reading layer</h2><div id="readState"></div><p id="pressbooksHint" class="muted"></p>
-        <div class="inline-input"><input id="pressbooksInput" type="url" placeholder="https://your-pressbooks-site/..."><button class="btn secondary" id="savePressbooks">Save URL</button><button class="btn" id="openPressbooks">Open Pressbooks</button></div>
-        <div class="actions"><button class="btn secondary" id="downloadPressbooksTemplate">Download current URL map</button></div>
-      </section>
-
-      <section class="card pane active" id="pane-inquire">
-        <h2>Structured Inquiry — central persistent layer</h2>
-        <div id="inquiryForm"></div>
-        <div class="actions"><a class="btn secondary" id="nativeMapbook" target="_blank" rel="noopener">Open bundled native Mapbook</a><button class="btn" id="importNativeBtn">Import current native work</button><button class="btn warn" id="clearNodeBtn">Clear this central record</button></div>
-        <p id="nativeNote" class="tiny muted"></p><p id="nativeImportNote" class="tiny muted"></p>
-      </section>
-
-      <section class="card pane" id="pane-map">
-        <h2>Persistent Student Map</h2>
-        <div id="mapStats" class="grid3"></div>
-        <div id="ledgerBody"></div>
-      </section>
-
-      <section class="card pane" id="pane-media">
-        <h2>Video / explainer layer</h2><p class="muted">Explainers are supplementary: captions + transcript, no autoplay, and no essential argument available only in video.</p><div id="mediaBody"></div>
-      </section>
-
-      <section class="card pane" id="pane-data">
-        <h2>Data, migration, and recovery</h2>
-        <div class="data-section"><h3>Verified storage</h3><div id="storageDetail" class="good"></div><p class="tiny muted">The app tries IndexedDB first, then localStorage, sessionStorage, and finally in-memory state. Export remains available at every tier.</p></div>
-        <div class="data-section"><h3>Portable exports</h3><div class="actions"><button class="btn" id="exportFull">Export full Student Map</button><button class="btn secondary" id="exportCurrent">Export current record</button><button class="btn secondary" id="exportLedger">Export ledger + applications</button></div></div>
-        <div class="data-section"><h3>Safe import</h3><label class="btn secondary file-label">Choose JSON<input id="importFile" type="file" accept=".json,application/json" class="hidden"></label><div id="importPreview"><p class="muted">No import pending.</p></div><div id="importActions" class="actions hidden"><button class="btn warn" id="importReplace">Replace current map</button><button class="btn" id="importMerge">Merge safely</button><button class="btn secondary" id="importCancel">Cancel</button></div><p class="tiny">Merge preserves resident values on conflicts and records the incoming alternative in <code>import_conflicts</code>. Current unresolved conflicts: <strong id="conflictCount">0</strong>.</p></div>
-        <div class="data-section"><h3>Native + legacy MAPBOOK integration</h3><div class="actions"><button class="btn secondary" id="scanLegacyBtn">Scan this browser</button><button class="btn" id="importLegacyBtn" disabled>Normalize + import recognized Mapbook data</button></div><p>Detected Mapbook-related browser namespaces: <strong id="legacyCount">0</strong>. Legacy source keys are never deleted automatically.</p><pre id="legacyPreview">Scan not yet run.</pre></div>
-        <div class="data-section"><h3>Recovery harness</h3><div class="actions"><button class="btn" id="runTestsBtn">Run recovery checks</button></div><p id="testSummary" class="muted"></p><div id="testResults"></div></div>
-        <div class="data-section"><h3>Reset</h3><button class="btn warn" id="newMapBtn">Start a new empty Student Map</button></div>
-      </section>
-      <p class="footer-note">Privacy default: no name, email, institutional identifier, or hidden analytics ID is required. This SUPER-3 bundle includes the production native Mapbooks in <code>mapbook/</code>. Historical references are pre-populated from those files; student responses remain separate.</p>
-    </main>
-  </div>
-  <script src="manifest.js"></script>
-  <script src="app.js"></script>
+    <footer>ECT-SI-CH9 · local-only Structured Inquiry · first map preserved · disagreement allowed · REOPEN retained</footer>
+    <script>
+    (() => {
+        'use strict';
+        const CHAPTER = 9,
+            KEY = `ect_si_ch${CHAPTER}_v1`,
+            SNAP = `ect_si_ch${CHAPTER}_mapa`,
+            XSNAP = `ect_si_ch${CHAPTER}_transfer`;
+        const q = s => document.querySelector(s),
+            qa = s => [...document.querySelectorAll(s)],
+            el = id => document.getElementById(id);
+        const fields = qa('textarea,select,input[type=text],input[type=checkbox]'),
+            required = qa('[data-required="true"]');
+        const val = id => {
+            const e = el(id);
+            if (!e)
+                return '';
+            return e.type === 'checkbox' ? (e.checked ? 'Yes' : 'No') : (e.value || '').trim()
+        };
+        const filled = e => e.type === 'checkbox' ? e.checked : (e.value || '').trim().length > 0;
+        function collect() {
+            const d = {};
+            fields.forEach(e => d[e.id] = e.type === 'checkbox' ? e.checked : e.value);
+            d.mode = el('workMode').value;
+            d.pacing = el('pacingMode').value;
+            return d
+        }
+        function save() {
+            try {
+                localStorage.setItem(KEY, JSON.stringify(collect()))
+            } catch (e) {}
+            progress()
+        }
+        function load() {
+            try {
+                const d = JSON.parse(localStorage.getItem(KEY) || '{}');
+                fields.forEach(e => {
+                    if (e.id in d) {
+                        if (e.type === 'checkbox')
+                            e.checked = !!d[e.id];
+                        else
+                            e.value = d[e.id]
+                    }
+                });
+                if (d.mode)
+                    el('workMode').value = d.mode;
+                if (d.pacing)
+                    el('pacingMode').value = d.pacing
+            } catch (e) {}
+            loadMapA();
+            loadTransfer();
+            mode();
+            progress()
+        }
+        function progress() {
+            const done = required.filter(filled).length,
+                pct = required.length ? Math.round(100 * done / required.length) : 0;
+            el('barFill').style.width = pct + '%';
+            el('progressText').textContent = `${done} of ${required.length} required responses completed.`
+        }
+        function mapAIds() {
+            return ["a_judgment", "a_reason", "a_condition", "a_unknown"]
+        }
+        function mapAText(s) {
+            let x = `MAP A — preserved ${s.when}\n`;
+            [["a_judgment", "Right now, how strong does the case for the project seem?"], ["a_reason", "What is the strongest reason for your first judgment?"], ["a_condition", "What condition or good seems most visible in the current map?"], ["a_unknown", "What would you still need to know before making a stronger judgment?"]].forEach(([id, label]) => x += `\n${label}:\n${s[id] || ''}\n`);
+            return x
+        }
+        function loadMapA() {
+            try {
+                const s = JSON.parse(localStorage.getItem(SNAP) || 'null');
+                if (!s)
+                    return;
+                mapAIds().forEach(id => el(id).disabled = true);
+                el('mapAStatus').textContent = 'Map A preserved';
+                el('mapAStatus').className = 'success';
+                ['snapshotA', 'returnSnapshot'].forEach(id => {
+                    el(id).textContent = mapAText(s);
+                    el(id).classList.remove('hidden')
+                })
+            } catch (e) {}
+        }
+        function mode() {
+            const group = el('workMode').value === 'group';
+            el('comparePrompt').textContent = group ? "Compare maps. Which life-support condition or dependency did different students notice first?" : "Construct a second map that begins from a different dependency than your own.";
+            el('modeNote').textContent = group ? 'Discuss first, then let one scribe record a shared comparison. Do not erase disagreement; each person keeps their own Map A and Map B.' : 'Work independently. At COMPARE, build the strongest reasonable alternative map you can rather than inventing a weak opponent.';
+            saveNoLoop()
+        }
+        function saveNoLoop() {
+            try {
+                const d = collect();
+                localStorage.setItem(KEY, JSON.stringify(d))
+            } catch (e) {}
+        }
+        qa('textarea,select,input').forEach(e => {
+            e.addEventListener('input', save);
+            e.addEventListener('change', save)
+        });
+        el('workMode').addEventListener('change', mode);
+        el('pacingMode').addEventListener('change', save);
+        el('sealBtn').onclick = () => {
+            const ids = mapAIds();
+            if (ids.some(id => !val(id))) {
+                alert('Complete the First Map fields before preserving Map A.');
+                return
+            }
+            const s = {
+                when: new Date().toLocaleString()
+            };
+            ids.forEach(id => s[id] = val(id));
+            localStorage.setItem(SNAP, JSON.stringify(s));
+            save();
+            loadMapA()
+        };
+        el('unsealBtn').onclick = () => {
+            if (!confirm('Reset the preserved Map A only for an accidental or technical correction?'))
+                return;
+            localStorage.removeItem(SNAP);
+            mapAIds().forEach(id => el(id).disabled = false);
+            ['snapshotA', 'returnSnapshot'].forEach(id => el(id).classList.add('hidden'));
+            el('mapAStatus').textContent = 'Map A not yet preserved';
+            el('mapAStatus').className = 'warning'
+        };
+        function transferText(s) {
+            return `TRANSFER FIRST PASS — captured ${s.when}\n\n${s.text}`
+        }
+        function loadTransfer() {
+            try {
+                const s = JSON.parse(localStorage.getItem(XSNAP) || 'null');
+                if (!s)
+                    return;
+                el('transferAnalysis').disabled = true;
+                el('transferSnapshot').textContent = transferText(s);
+                el('transferSnapshot').classList.remove('hidden');
+                el('selfCheck').classList.remove('hidden')
+            } catch (e) {}
+        }
+        el('captureTransferBtn').onclick = () => {
+            if (!val('transferAnalysis')) {
+                alert('Write your transfer first pass before opening the self-check.');
+                return
+            }
+            const s = {
+                when: new Date().toLocaleString(),
+                text: val('transferAnalysis')
+            };
+            localStorage.setItem(XSNAP, JSON.stringify(s));
+            save();
+            loadTransfer()
+        };
+        el('resetTransferBtn').onclick = () => {
+            if (!confirm('Reset the captured transfer first pass?'))
+                return;
+            localStorage.removeItem(XSNAP);
+            el('transferAnalysis').disabled = false;
+            el('transferSnapshot').classList.add('hidden');
+            el('selfCheck').classList.add('hidden')
+        };
+        function section(title, pairs) {
+            let x = `\n${title}\n${'='.repeat(title.length)}\n`;
+            pairs.forEach(([a, b]) => x += `${a}:\n${b || '[not completed]'}\n\n`);
+            return x
+        }
+        function output() {
+            let o = `ECT STRUCTURED INQUIRY — CHAPTER ${CHAPTER}\nWhat Price Is Missing From the Map?\n`;
+            let s = null;
+            try {
+                s = JSON.parse(localStorage.getItem(SNAP) || 'null')
+            } catch (e) {}
+            o += section('MAP A', [['Preserved first map', s ? mapAText(s) : '[not preserved]']]);
+            o += section('COMPARE', [['Difference / alternative map', val('compare1')], ['Assumption / missing condition', val('compare2')]]);
+            o += section('INSTRUCTOR UNLOCKS', [['Unlock 1', val('u1')], ['Unlock 2', val('u2')], ['Unlock 3', val('u3')]]);
+            o += section('MAP B', [["After the unlocks, how do you now judge the project as proposed?", val("b_judgment")], ["What changed when the map widened from price to conditions, burdens, voice, and future agency?", val("b_change")], ["What can you still not responsibly conclude from the information given?", val("b_limit")]]);
+            o += section('TRANSFER', [['First-pass analysis', val('transferAnalysis')], ['What I still cannot conclude', val('transferLimit')], ['What would make me REOPEN', val('transferReopen')]]);
+            o += section('CARRY FORWARD', [['Relation between Map A and Map B', val('relation')], ['Carry-forward sentence', val('carry')], ['Discussion question I would bring to class/online board', val('discussion')]]);
+            return o
+        }
+        el('generateBtn').onclick = () => {
+            const missing = required.filter(e => !filled(e));
+            if (missing.length)
+                el('validation').textContent = `Draft generated, but ${missing.length} required response(s) are still incomplete.`;
+            else
+                el('validation').textContent = 'Core Structured Inquiry responses complete.';
+            el('output').value = output();
+            save()
+        }
+        el('copyBtn').onclick = async () => {
+            if (!el('output').value)
+                el('output').value = output();
+            try {
+                await navigator.clipboard.writeText(el('output').value);
+                alert('Carry-forward note copied.')
+            } catch (e) {
+                el('output').select();
+                document.execCommand('copy')
+            }
+        }
+        el('downloadBtn').onclick = () => {
+            if (!el('output').value)
+                el('output').value = output();
+            const b = new Blob([el('output').value], {
+                    type: 'text/plain;charset=utf-8'
+                }),
+                u = URL.createObjectURL(b),
+                a = document.createElement('a');
+            a.href = u;
+            a.download = `ECT-SI-CH${CHAPTER}-carry-forward.txt`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(u)
+        }
+        el('clearBtn').onclick = () => {
+            if (confirm(`Clear all Chapter ${CHAPTER} Structured Inquiry work stored in this browser?`)) {
+                localStorage.removeItem(KEY);
+                localStorage.removeItem(SNAP);
+                localStorage.removeItem(XSNAP);
+                location.reload()
+            }
+        }
+        load();
+    })();
+    </script>
 </body>
 </html>
